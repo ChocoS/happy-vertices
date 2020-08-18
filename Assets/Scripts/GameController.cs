@@ -23,6 +23,7 @@ public class GameController : MonoBehaviour
     void Start() {
         if (CURRENT_LEVEL_TO_LOAD != 0) {
             currentLevel = levelManager.loadLevel(CURRENT_LEVEL_TO_LOAD);
+            UpdateAllVerticesGameObjects();
         }
         debug = GameObject.FindGameObjectWithTag("Debug").GetComponent<DebugController>();
     }
@@ -34,7 +35,8 @@ public class GameController : MonoBehaviour
         if (currentLevel != null && currentLevel.GetGraph().AllVerticesHappy()) {
             if (AnyInput()) {
                 currentLevel = levelManager.loadLevel(++CURRENT_LEVEL_TO_LOAD);
-            }            
+                UpdateAllVerticesGameObjects();
+            }
         }
 
         if (Input.touchSupported) {
@@ -172,6 +174,12 @@ public class GameController : MonoBehaviour
             UpdateVertexGameObject(vertex);
         }
         foreach (Vertex vertex in vertex2.GetNeighbours().Keys) {
+            UpdateVertexGameObject(vertex);
+        }
+    }
+
+    private void UpdateAllVerticesGameObjects() {
+        foreach (Vertex vertex in currentLevel.GetGraph().GetVertices()) {
             UpdateVertexGameObject(vertex);
         }
     }

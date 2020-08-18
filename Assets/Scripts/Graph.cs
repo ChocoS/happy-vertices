@@ -7,6 +7,7 @@ public class Graph {
 
     public Graph(Vertex[] vertices) {
         this.vertices.AddRange(vertices);
+        UpdateVerticesState();
     }
 
     public List<Vertex> GetVertices() {
@@ -29,5 +30,11 @@ public class Graph {
             }
         }
         return true;
+    }
+
+    public void UpdateVerticesState() {
+        foreach (Vertex vertex in vertices) {
+            vertex.UpdateState();
+        }
     }
 }

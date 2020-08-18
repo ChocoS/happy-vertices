@@ -6,7 +6,7 @@ public class Edge {
     
     private Vertex v1;
     private Vertex v2;
-    private int weight = 0;
+    private int weight = 1;
     private GameObject gameObject;
 
     public void SetGameObject(GameObject gameObject) {
@@ -23,8 +23,8 @@ public class Edge {
     }
 
     public int setWeight(int weight) {
-        if (weight < 0) {
-            this.weight = 0;
+        if (weight < 1) {
+            this.weight = 1;
         } else if (weight > MAX_WEIGHT) {
             this.weight = MAX_WEIGHT;
         } else {
@@ -47,7 +47,7 @@ public class Edge {
 
     public int IncrementWeight() {
         if (weight == MAX_WEIGHT) {
-            weight = 0;
+            weight = 1;
         } else {
             weight++;
         }

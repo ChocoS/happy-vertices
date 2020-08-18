@@ -127,7 +127,7 @@ public class LevelManager : MonoBehaviour
         GameObject line = Instantiate(resourcesController.edgePrefab, Vector3.zero, Quaternion.identity);
         line.GetComponent<LineRenderer>().SetPosition(0, v1.transform.position);
         line.GetComponent<LineRenderer>().SetPosition(1, v2.transform.position);
-        line.GetComponent<LineRenderer>().material = resourcesController.edgeWeight0Material;
+        line.GetComponent<LineRenderer>().material = resourcesController.edgeWeight1Material;
         return line;
     }
 
