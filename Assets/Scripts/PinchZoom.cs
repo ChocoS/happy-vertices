@@ -5,7 +5,7 @@ using UnityEngine;
 public class PinchZoom : MonoBehaviour
 {
     public static float MIN_ZOOM = 2.0f;
-    public static float MAX_ZOOM = 5.0f;
+    public static float MAX_ZOOM = 12.0f;
 
     private DebugController debug;
 

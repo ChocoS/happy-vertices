@@ -12,7 +12,7 @@ public class GameController : MonoBehaviour
     public LevelManager levelManager;
 
     private GameObject currentEdge;
-    private Graph currentGraph;
+    private Level currentLevel;
     private Vector3 dragStartingPosition;
     private Vector3 cameraStartDragPosition;
     private float zoomSensitivity = 0.2f;
@@ -22,7 +22,7 @@ public class GameController : MonoBehaviour
 
     void Start() {
         if (CURRENT_LEVEL_TO_LOAD != 0) {
-            currentGraph = levelManager.loadLevel(CURRENT_LEVEL_TO_LOAD);
+            currentLevel = levelManager.loadLevel(CURRENT_LEVEL_TO_LOAD);
         }
         debug = GameObject.FindGameObjectWithTag("Debug").GetComponent<DebugController>();
     }
@@ -31,9 +31,9 @@ public class GameController : MonoBehaviour
     {
         debug.AddText("Debug: ");
 
-        if (currentGraph != null && currentGraph.AllVerticesHappy()) {
+        if (currentLevel != null && currentLevel.GetGraph().AllVerticesHappy()) {
             if (AnyInput()) {
-                currentGraph = levelManager.loadLevel(++CURRENT_LEVEL_TO_LOAD);
+                currentLevel = levelManager.loadLevel(++CURRENT_LEVEL_TO_LOAD);
             }            
         }
 
@@ -77,7 +77,9 @@ public class GameController : MonoBehaviour
         } else if (Input.GetAxis("Mouse ScrollWheel") < 0) {
             Camera.main.orthographicSize = Mathf.Min(Camera.main.orthographicSize+zoomSensitivity, PinchZoom.MAX_ZOOM);
         }
+
         debug.AddText("Camera.main.orthographicSize: " + Camera.main.orthographicSize);
+        debug.AddText("Camera.main.transform.position: " + Camera.main.transform.position);
     }
 
     private Vector3 getTouchActivePosition(Touch touch) {
@@ -121,6 +123,14 @@ public class GameController : MonoBehaviour
             debug.AddText("HandleClicked dragStartingPosition " + dragStartingPosition);
             debug.AddText("HandleClicked dragStartingPosition - activePosition " + (dragStartingPosition - activePosition));
             Camera.main.transform.position += dragStartingPosition - activePosition;
+            ClampCameraTransformPosition();
+        }
+    }
+
+    private void ClampCameraTransformPosition() {
+        if (currentLevel != null) {
+            Camera.main.transform.position = new Vector3(Mathf.Clamp(Camera.main.transform.position.x, currentLevel.GetBoundry().xMin, currentLevel.GetBoundry().xMax),
+                Mathf.Clamp(Camera.main.transform.position.y, currentLevel.GetBoundry().yMin, currentLevel.GetBoundry().yMax), Camera.main.transform.position.z);
         }
     }
 
@@ -136,8 +146,8 @@ public class GameController : MonoBehaviour
             if (vertexGameObject0 != null && vertexGameObject1 != null && vertexGameObject0 != vertexGameObject1) {
                 lineRenderer.SetPosition(0, vertexGameObject0.transform.position);
                 lineRenderer.SetPosition(1, vertexGameObject1.transform.position);
-                Vertex v0 = currentGraph.FindVertexByGameObject(vertexGameObject0);
-                Vertex v1 = currentGraph.FindVertexByGameObject(vertexGameObject1);
+                Vertex v0 = currentLevel.GetGraph().FindVertexByGameObject(vertexGameObject0);
+                Vertex v1 = currentLevel.GetGraph().FindVertexByGameObject(vertexGameObject1);
                 if (v0.IsNeighbour(v1)) {
                     Edge edge = v0.incrementNeighbour(v1);
                     UpdateAffectedGameObjects(edge);
