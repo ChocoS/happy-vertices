@@ -73,10 +73,11 @@ public class GameController : MonoBehaviour
         }
 
         if (Input.GetAxis("Mouse ScrollWheel") > 0) {
-            Camera.main.orthographicSize = Mathf.Max(Camera.main.orthographicSize-zoomSensitivity, 1);
+            Camera.main.orthographicSize = Mathf.Max(Camera.main.orthographicSize-zoomSensitivity, PinchZoom.MIN_ZOOM);
         } else if (Input.GetAxis("Mouse ScrollWheel") < 0) {
-            Camera.main.orthographicSize = Mathf.Min(Camera.main.orthographicSize+zoomSensitivity, 5);
+            Camera.main.orthographicSize = Mathf.Min(Camera.main.orthographicSize+zoomSensitivity, PinchZoom.MAX_ZOOM);
         }
+        debug.AddText("Camera.main.orthographicSize: " + Camera.main.orthographicSize);
     }
 
     private Vector3 getTouchActivePosition(Touch touch) {

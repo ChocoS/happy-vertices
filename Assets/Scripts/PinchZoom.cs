@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PinchZoom : MonoBehaviour
 {
-    // public float sensitivity = 0.001f;
+    public static float MIN_ZOOM = 2.0f;
+    public static float MAX_ZOOM = 5.0f;
 
     private DebugController debug;
 
@@ -27,6 +28,7 @@ public class PinchZoom : MonoBehaviour
 
             // Camera.main.orthographicSize = Mathf.Max(Camera.main.orthographicSize + deltaMagnitudeDiff * sensitivity, 0.1f);
             Camera.main.orthographicSize *= prevTouchDeltaMag / touchDeltaMag;
+            Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, MIN_ZOOM, MAX_ZOOM);
         }        
     }
 }
