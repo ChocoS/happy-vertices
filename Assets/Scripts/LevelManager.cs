@@ -16,6 +16,7 @@ public class LevelManager : MonoBehaviour
             case 5: return loadLevel5();
             case 6: return loadLevel6();
             case 7: return loadLevel7();
+            case 8: return loadLevel8();
         }
         return null;
     }
@@ -96,6 +97,30 @@ public class LevelManager : MonoBehaviour
         Vertex v6 = new Vertex(InstantiateVertex(2, -2));
         CreateEdgesInBipartiteGraph(new Vertex[] {v1, v2, v3}, new Vertex[] {v4, v5, v6});
         Graph graph = new Graph(new Vertex[] {v1, v2, v3, v4, v5, v6});
+        return new Level(graph, new Rect(-5, -3, 10, 6));
+    }
+
+    private Level loadLevel8() {
+        Vertex v1 = new Vertex(InstantiateVertex(-2, 2));
+        Vertex v5 = new Vertex(InstantiateVertex(-2, -2));
+        Vertex v4 = new Vertex(InstantiateVertex(2, -2));
+        Vertex v2 = new Vertex(InstantiateVertex(2, 2));
+        Vertex v6 = new Vertex(InstantiateVertex(-3, 0));
+        Vertex v3 = new Vertex(InstantiateVertex(3, 0));
+        Vertex v7 = new Vertex(InstantiateVertex(0, 0));
+        CreateEdge(v1, v2);
+        CreateEdge(v2, v3);
+        CreateEdge(v3, v4);
+        CreateEdge(v4, v5);
+        CreateEdge(v5, v6);
+        CreateEdge(v6, v1);
+        CreateEdge(v7, v1);
+        CreateEdge(v7, v2);
+        CreateEdge(v7, v3);
+        CreateEdge(v7, v4);
+        CreateEdge(v7, v5);
+        CreateEdge(v7, v6);
+        Graph graph = new Graph(new Vertex[] {v1, v2, v3, v4, v5, v6, v7});
         return new Level(graph, new Rect(-5, -3, 10, 6));
     }
 
