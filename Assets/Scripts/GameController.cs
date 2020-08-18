@@ -18,6 +18,7 @@ public class GameController : MonoBehaviour
     private Vector3 dragStartingPosition;
     private Vector3 cameraStartDragPosition;
     private float zoomSensitivity = 0.2f;
+    private int currentLevelMoveCounter = 0;
 
     private DebugController debug;
     private bool multiTouchInPreviousFrame = false;
@@ -25,7 +26,7 @@ public class GameController : MonoBehaviour
     void Start() {
         if (CURRENT_LEVEL_TO_LOAD != 0) {
             currentLevel = levelManager.loadLevel(CURRENT_LEVEL_TO_LOAD);
-            UpdateAllVerticesGameObjects();
+            ResetLevel();
         }
         debug = GameObject.FindGameObjectWithTag("Debug").GetComponent<DebugController>();
     }
@@ -37,7 +38,7 @@ public class GameController : MonoBehaviour
         if (currentLevel != null && currentLevel.GetGraph().AllVerticesHappy()) {
             if (AnyInput()) {
                 currentLevel = levelManager.loadLevel(++CURRENT_LEVEL_TO_LOAD);
-                UpdateAllVerticesGameObjects();
+                ResetLevel();
             }
         }
 
@@ -84,6 +85,7 @@ public class GameController : MonoBehaviour
 
         debug.AddText("Camera.main.orthographicSize: " + Camera.main.orthographicSize);
         debug.AddText("Camera.main.transform.position: " + Camera.main.transform.position);
+        debug.AddText("currentLevelMoveCounter: " + currentLevelMoveCounter);
     }
 
     private Vector3 getTouchActivePosition(Touch touch) {
@@ -155,6 +157,7 @@ public class GameController : MonoBehaviour
                 if (v0.IsNeighbour(v1)) {
                     Edge edge = v0.incrementNeighbour(v1);
                     UpdateAffectedGameObjects(edge);
+                    currentLevelMoveCounter++;
                 }
             }
             Destroy(currentEdge);
@@ -178,6 +181,11 @@ public class GameController : MonoBehaviour
         foreach (Vertex vertex in vertex2.GetNeighbours().Keys) {
             UpdateVertexGameObject(vertex);
         }
+    }
+
+    private void ResetLevel() {
+        UpdateAllVerticesGameObjects();
+        currentLevelMoveCounter = 0;
     }
 
     private void UpdateAllVerticesGameObjects() {
