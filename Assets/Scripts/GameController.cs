@@ -8,6 +8,8 @@ public class GameController : MonoBehaviour
 {
     public static int CURRENT_LEVEL_TO_LOAD = 0;
 
+    private static float MAX_VERTEX_PROXIMITY = 1.0f;
+
     public ResourcesController resourcesController;
     public LevelManager levelManager;
 
@@ -144,7 +146,7 @@ public class GameController : MonoBehaviour
             Vector2 point1 = lineRenderer.GetPosition(1);
             GameObject[] vertices = GameObject.FindGameObjectsWithTag(resourcesController.vertexTag);
             GameObject vertexGameObject0 = GetVertexThatContainsPoint(vertices, point0);
-            GameObject vertexGameObject1 = GetVertexThatContainsPoint(vertices, point1);
+            GameObject vertexGameObject1 = GetClosestVertexToPoint(vertices, point1);
             if (vertexGameObject0 != null && vertexGameObject1 != null && vertexGameObject0 != vertexGameObject1) {
                 lineRenderer.SetPosition(0, vertexGameObject0.transform.position);
                 lineRenderer.SetPosition(1, vertexGameObject1.transform.position);
@@ -206,6 +208,20 @@ public class GameController : MonoBehaviour
             }
         }
         return null;
+    }
+
+    private GameObject GetClosestVertexToPoint(GameObject[] vertices, Vector2 point) {
+        GameObject closestVertex = null;
+        float closestDistance = float.MaxValue;
+        foreach (GameObject vertex in vertices) {
+            CircleCollider2D collider = vertex.GetComponentInChildren<CircleCollider2D>();
+            float currentDistance = (collider.ClosestPoint(point) - point).magnitude;
+            if (currentDistance < closestDistance) {
+                closestDistance = currentDistance;
+                closestVertex = vertex;
+            }
+        }
+        return closestDistance < MAX_VERTEX_PROXIMITY ? closestVertex : null;
     }
 
     private bool ColliderContainsPoint(Collider2D collider, Vector2 point) {
