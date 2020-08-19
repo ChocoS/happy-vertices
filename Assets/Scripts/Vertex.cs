@@ -9,7 +9,7 @@ public class Vertex {
 
     public Vertex(GameObject gameObject) {
         this.gameObject = gameObject;
-        this.state = State.ASLEEP;
+        this.state = State.NORMAL;
     }
 
     public State GetState() {
@@ -53,18 +53,8 @@ public class Vertex {
 
     public void UpdateState() {
         int totalEdgeWeight = GetTotalEdgeWeight();
-        if (totalEdgeWeight == 0) {
-            state = State.ASLEEP;
-            return;
-        }
         foreach (Vertex neighbour in neighbours.Keys) {
             if (neighbour.GetTotalEdgeWeight() == totalEdgeWeight) {
-                state = State.NOT_HAPPY;
-                return;
-            }
-        }
-        foreach (KeyValuePair<Vertex, Edge> neighbourEdgePair in neighbours) {
-            if (neighbourEdgePair.Value.GetWeight() == 0) {
                 state = State.NORMAL;
                 return;
             }
@@ -81,9 +71,7 @@ public class Vertex {
     }
 
     public enum State {
-        ASLEEP = 0, // total edge weight 0
-        NOT_HAPPY = 1, // exists a neighbour with the same total weight
-        NORMAL = 2, // not NOT_HAPPY and exists an edge with weight 0
-        HAPPY = 3, // not NOT_HAPPY and all edges with weight > 0
+        NORMAL = 0, // exists a neighbour with the same total weight
+        HAPPY = 1, // not NORMAL
     }
 }

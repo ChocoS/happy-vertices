@@ -37,6 +37,7 @@ public class GameController : MonoBehaviour
 
         if (currentLevel != null && currentLevel.GetGraph().AllVerticesHappy()) {
             if (AnyInput()) {
+                FinishLevel();
                 currentLevel = levelManager.loadLevel(++CURRENT_LEVEL_TO_LOAD);
                 ResetLevel();
             }
@@ -186,6 +187,9 @@ public class GameController : MonoBehaviour
     private void ResetLevel() {
         UpdateAllVerticesGameObjects();
         currentLevelMoveCounter = 0;
+    }
+
+    private void FinishLevel() {
     }
 
     private void UpdateAllVerticesGameObjects() {
