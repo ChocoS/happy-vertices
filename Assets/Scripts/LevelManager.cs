@@ -6,6 +6,8 @@ public class LevelManager : MonoBehaviour
 {
     public ResourcesController resourcesController;
 
+    private Rect defaultBorder = new Rect(-20, -10, 40, 20);
+
     public Level loadLevel(int level) {
         clearAll();
         switch (level) {
@@ -27,7 +29,7 @@ public class LevelManager : MonoBehaviour
         Vertex v3 = new Vertex(InstantiateVertex(0, 2));
         CreateEdgesInClique(new Vertex[] {v1, v2, v3});
         Graph graph = new Graph(new Vertex[] {v1, v2, v3});
-        return new Level(graph, new Rect(-5, -3, 10, 6));
+        return new Level(graph, defaultBorder);
     }
 
     private Level loadLevel2() {
@@ -37,7 +39,7 @@ public class LevelManager : MonoBehaviour
         Vertex v4 = new Vertex(InstantiateVertex(-2, 2));
         CreateEdgesInBipartiteGraph(new Vertex[] {v1, v3}, new Vertex[] {v2, v4});
         Graph graph = new Graph(new Vertex[] {v1, v2, v3, v4});
-        return new Level(graph, new Rect(-5, -3, 10, 6));
+        return new Level(graph, defaultBorder);
     }
     
     private Level loadLevel3() {
@@ -51,7 +53,7 @@ public class LevelManager : MonoBehaviour
         CreateEdge(v4, v1);
         CreateEdge(v2, v4);
         Graph graph = new Graph(new Vertex[] {v1, v2, v3, v4});
-        return new Level(graph, new Rect(-5, -3, 10, 6));
+        return new Level(graph, defaultBorder);
     }
 
     private Level loadLevel4() {
@@ -61,7 +63,7 @@ public class LevelManager : MonoBehaviour
         Vertex v4 = new Vertex(InstantiateVertex(-2, 2));
         CreateEdgesInClique(new Vertex[] {v1, v2, v3, v4});
         Graph graph = new Graph(new Vertex[] {v1, v2, v3, v4});
-        return new Level(graph, new Rect(-5, -3, 10, 6));
+        return new Level(graph, defaultBorder);
     }
 
     private Level loadLevel5() {
@@ -74,7 +76,7 @@ public class LevelManager : MonoBehaviour
         CreateEdge(v1, v5);
         CreateEdge(v4, v5);
         Graph graph = new Graph(new Vertex[] {v1, v2, v3, v4, v5});
-        return new Level(graph, new Rect(-5, -3, 10, 6));
+        return new Level(graph, defaultBorder);
     }
 
     private Level loadLevel6() {
@@ -85,7 +87,7 @@ public class LevelManager : MonoBehaviour
         Vertex v5 = new Vertex(InstantiateVertex(0, 4));
         CreateEdgesInClique(new Vertex[] {v1, v2, v3, v4, v5});
         Graph graph = new Graph(new Vertex[] {v1, v2, v3, v4, v5});
-        return new Level(graph, new Rect(-5, -3, 10, 6));
+        return new Level(graph, defaultBorder);
     }
 
     private Level loadLevel7() {
@@ -97,7 +99,7 @@ public class LevelManager : MonoBehaviour
         Vertex v6 = new Vertex(InstantiateVertex(2, -2));
         CreateEdgesInBipartiteGraph(new Vertex[] {v1, v2, v3}, new Vertex[] {v4, v5, v6});
         Graph graph = new Graph(new Vertex[] {v1, v2, v3, v4, v5, v6});
-        return new Level(graph, new Rect(-5, -3, 10, 6));
+        return new Level(graph, defaultBorder);
     }
 
     private Level loadLevel8() {
@@ -121,7 +123,7 @@ public class LevelManager : MonoBehaviour
         CreateEdge(v7, v5);
         CreateEdge(v7, v6);
         Graph graph = new Graph(new Vertex[] {v1, v2, v3, v4, v5, v6, v7});
-        return new Level(graph, new Rect(-5, -3, 10, 6));
+        return new Level(graph, defaultBorder);
     }
 
     private void CreateEdgesInClique(Vertex[] vertices) {

@@ -19,14 +19,14 @@ public class GameController : MonoBehaviour
     private Vector3 cameraStartDragPosition;
     private float zoomSensitivity = 0.2f;
     private int currentLevelMoveCounter = 0;
+    private List<GameObject> borders = new List<GameObject>();
 
     private DebugController debug;
     private bool multiTouchInPreviousFrame = false;
 
     void Start() {
         if (CURRENT_LEVEL_TO_LOAD != 0) {
-            currentLevel = levelManager.loadLevel(CURRENT_LEVEL_TO_LOAD);
-            ResetLevel();
+            PrepareNewLevel();
         }
         debug = GameObject.FindGameObjectWithTag("Debug").GetComponent<DebugController>();
     }
@@ -38,8 +38,7 @@ public class GameController : MonoBehaviour
         if (currentLevel != null && currentLevel.GetGraph().AllVerticesHappy()) {
             if (AnyInput()) {
                 FinishLevel();
-                currentLevel = levelManager.loadLevel(++CURRENT_LEVEL_TO_LOAD);
-                ResetLevel();
+                PrepareNewLevel();
             }
         }
 
@@ -184,12 +183,30 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void ResetLevel() {
+    private void PrepareNewLevel() {
+        currentLevel = levelManager.loadLevel(CURRENT_LEVEL_TO_LOAD);
+        DrawBorder();
         UpdateAllVerticesGameObjects();
         currentLevelMoveCounter = 0;
     }
 
+    private void DrawBorder() {
+        foreach (GameObject border in borders) {
+            Destroy(border);
+        }
+        borders.Clear();
+        Vector2 bottomLeft = new Vector2(currentLevel.GetBoundry().xMin, currentLevel.GetBoundry().yMin);
+        Vector2 topLeft = new Vector2(currentLevel.GetBoundry().xMin, currentLevel.GetBoundry().yMax);
+        Vector2 bottomRight = new Vector2(currentLevel.GetBoundry().xMax, currentLevel.GetBoundry().yMin);
+        Vector2 topRight = new Vector2(currentLevel.GetBoundry().xMax, currentLevel.GetBoundry().yMax);
+        borders.Add(SpawnBorder(bottomLeft, topLeft));
+        borders.Add(SpawnBorder(topLeft, topRight));
+        borders.Add(SpawnBorder(topRight, bottomRight));
+        borders.Add(SpawnBorder(bottomRight, bottomLeft));
+    }
+
     private void FinishLevel() {
+        CURRENT_LEVEL_TO_LOAD++;
     }
 
     private void UpdateAllVerticesGameObjects() {
@@ -244,6 +261,14 @@ public class GameController : MonoBehaviour
         Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         position.z = 0;
         return position;
+    }
+
+    private GameObject SpawnBorder(Vector2 startPos, Vector2 endPos) {
+        GameObject border = Instantiate(resourcesController.borderPrefab, Vector2.zero, Quaternion.identity);
+        border.GetComponent<LineRenderer>().SetPosition(0, startPos);
+        border.GetComponent<LineRenderer>().SetPosition(1, endPos);
+        border.GetComponent<LineRenderer>().material = resourcesController.borderMaterial;
+        return border;
     }
 
     private GameObject SpawnTempEdge(Vector2 position) {
