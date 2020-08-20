@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour
 
     public ResourcesController resourcesController;
     public LevelManager levelManager;
+    public GameInfoPanelController gameInfoPanelController;
 
     private GameObject currentEdge;
     private Level currentLevel;
@@ -85,7 +86,6 @@ public class GameController : MonoBehaviour
 
         debug.AddText("Camera.main.orthographicSize: " + Camera.main.orthographicSize);
         debug.AddText("Camera.main.transform.position: " + Camera.main.transform.position);
-        debug.AddText("currentLevelMoveCounter: " + currentLevelMoveCounter);
     }
 
     private Vector3 getTouchActivePosition(Touch touch) {
@@ -157,12 +157,17 @@ public class GameController : MonoBehaviour
                 if (v0.IsNeighbour(v1)) {
                     Edge edge = v0.incrementNeighbour(v1);
                     UpdateAffectedGameObjects(edge);
-                    currentLevelMoveCounter++;
+                    UpdateNumberOfMoves();
                 }
             }
             Destroy(currentEdge);
             currentEdge = null;
         }
+    }
+
+    private void UpdateNumberOfMoves() {
+        currentLevelMoveCounter++;
+        gameInfoPanelController.setNumberOfMoves(currentLevelMoveCounter);
     }
 
     private GameObject[] GetAllVertexGameObjects() {
@@ -188,6 +193,7 @@ public class GameController : MonoBehaviour
         DrawBorder();
         UpdateAllVerticesGameObjects();
         currentLevelMoveCounter = 0;
+        gameInfoPanelController.setNumberOfMoves(0);
     }
 
     private void DrawBorder() {
