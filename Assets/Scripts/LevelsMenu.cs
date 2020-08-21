@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class LevelsMenu : MonoBehaviour
 {
     public void PlayLevel(int level) {
-        GameController.CURRENT_LEVEL_TO_LOAD = level;
+        GameController.CURRENT_LEVEL = level;
         SceneManager.LoadScene("GameScene");
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
-    public static int CURRENT_LEVEL_TO_LOAD = 0;
+    public static int CURRENT_LEVEL = 0;
 
     private static float MAX_VERTEX_PROXIMITY = 1.0f;
 
@@ -26,7 +26,7 @@ public class GameController : MonoBehaviour
     private bool multiTouchInPreviousFrame = false;
 
     void Start() {
-        if (CURRENT_LEVEL_TO_LOAD != 0) {
+        if (CURRENT_LEVEL != 0) {
             PrepareNewLevel();
         }
         debug = GameObject.FindGameObjectWithTag("Debug").GetComponent<DebugController>();
@@ -86,6 +86,8 @@ public class GameController : MonoBehaviour
 
         debug.AddText("Camera.main.orthographicSize: " + Camera.main.orthographicSize);
         debug.AddText("Camera.main.transform.position: " + Camera.main.transform.position);
+
+        debug.AddText("PlayerContext: " + PlayerContextManager.GetCurrentContext());
     }
 
     private Vector3 getTouchActivePosition(Touch touch) {
@@ -189,7 +191,7 @@ public class GameController : MonoBehaviour
     }
 
     private void PrepareNewLevel() {
-        currentLevel = levelManager.loadLevel(CURRENT_LEVEL_TO_LOAD);
+        currentLevel = levelManager.loadLevel(CURRENT_LEVEL);
         DrawBorder();
         UpdateAllVerticesGameObjects();
         currentLevelMoveCounter = 0;
@@ -212,7 +214,8 @@ public class GameController : MonoBehaviour
     }
 
     private void FinishLevel() {
-        CURRENT_LEVEL_TO_LOAD++;
+        PlayerContextManager.UpdateBestNumberOfMoves(CURRENT_LEVEL, currentLevelMoveCounter);
+        CURRENT_LEVEL++;
     }
 
     private void UpdateAllVerticesGameObjects() {
