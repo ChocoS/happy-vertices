@@ -2,7 +2,7 @@ using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-public class PlayerContextManager {
+public static class PlayerContextManager {
 
     private static string path = Application.persistentDataPath + "/happy-vertices.dat";
     private static BinaryFormatter formatter = new BinaryFormatter();
