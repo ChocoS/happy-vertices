@@ -6,140 +6,78 @@ public class LevelManager : MonoBehaviour
 {
     public ResourcesController resourcesController;
 
-    private Rect defaultBorder = new Rect(-20, -10, 40, 20);
+    private static Dictionary<int, LevelTemplate> levelTemplates = LoadLevelTemplates();
 
     public Level loadLevel(int level) {
         clearAll();
-        switch (level) {
-            case 1: return loadLevel1();
-            case 2: return loadLevel2();
-            case 3: return loadLevel3();
-            case 4: return loadLevel4();
-            case 5: return loadLevel5();
-            case 6: return loadLevel6();
-            case 7: return loadLevel7();
-            case 8: return loadLevel8();
+        return LoadLevelFromTemplate(levelTemplates[level], level);
+    }
+
+    private Level LoadLevelFromTemplate(LevelTemplate levelTemplate, int number){
+        List<Vertex> vertices = new List<Vertex>();
+        foreach (float[] vertex in levelTemplate.GetVertices()) {
+            vertices.Add(new Vertex(InstantiateVertex(vertex[0], vertex[1])));
         }
-        return null;
-    }
-
-    private Level loadLevel1() {
-        Vertex v1 = new Vertex(InstantiateVertex(-2, 0));
-        Vertex v2 = new Vertex(InstantiateVertex(2, 0));
-        Vertex v3 = new Vertex(InstantiateVertex(0, 2));
-        CreateEdgesInClique(new Vertex[] {v1, v2, v3});
-        Graph graph = new Graph(new Vertex[] {v1, v2, v3});
-        return new Level(1, graph, defaultBorder);
-    }
-
-    private Level loadLevel2() {
-        Vertex v1 = new Vertex(InstantiateVertex(2, 2));
-        Vertex v2 = new Vertex(InstantiateVertex(2, -2));
-        Vertex v3 = new Vertex(InstantiateVertex(-2, -2));
-        Vertex v4 = new Vertex(InstantiateVertex(-2, 2));
-        CreateEdgesInBipartiteGraph(new Vertex[] {v1, v3}, new Vertex[] {v2, v4});
-        Graph graph = new Graph(new Vertex[] {v1, v2, v3, v4});
-        return new Level(2, graph, defaultBorder);
-    }
-    
-    private Level loadLevel3() {
-        Vertex v1 = new Vertex(InstantiateVertex(2, 2));
-        Vertex v2 = new Vertex(InstantiateVertex(2, -2));
-        Vertex v3 = new Vertex(InstantiateVertex(-2, -2));
-        Vertex v4 = new Vertex(InstantiateVertex(-2, 2));
-        CreateEdge(v1, v2);
-        CreateEdge(v2, v3);
-        CreateEdge(v3, v4);
-        CreateEdge(v4, v1);
-        CreateEdge(v2, v4);
-        Graph graph = new Graph(new Vertex[] {v1, v2, v3, v4});
-        return new Level(3, graph, defaultBorder);
-    }
-
-    private Level loadLevel4() {
-        Vertex v1 = new Vertex(InstantiateVertex(2, 2));
-        Vertex v2 = new Vertex(InstantiateVertex(2, -2));
-        Vertex v3 = new Vertex(InstantiateVertex(-2, -2));
-        Vertex v4 = new Vertex(InstantiateVertex(-2, 2));
-        CreateEdgesInClique(new Vertex[] {v1, v2, v3, v4});
-        Graph graph = new Graph(new Vertex[] {v1, v2, v3, v4});
-        return new Level(4, graph, defaultBorder);
-    }
-
-    private Level loadLevel5() {
-        Vertex v1 = new Vertex(InstantiateVertex(2, 2));
-        Vertex v2 = new Vertex(InstantiateVertex(2, -2));
-        Vertex v3 = new Vertex(InstantiateVertex(-2, -2));
-        Vertex v4 = new Vertex(InstantiateVertex(-2, 2));
-        Vertex v5 = new Vertex(InstantiateVertex(0, 4));
-        CreateEdgesInClique(new Vertex[] {v1, v2, v3, v4});
-        CreateEdge(v1, v5);
-        CreateEdge(v4, v5);
-        Graph graph = new Graph(new Vertex[] {v1, v2, v3, v4, v5});
-        return new Level(5, graph, defaultBorder);
-    }
-
-    private Level loadLevel6() {
-        Vertex v1 = new Vertex(InstantiateVertex(2, 2));
-        Vertex v2 = new Vertex(InstantiateVertex(2, -2));
-        Vertex v3 = new Vertex(InstantiateVertex(-2, -2));
-        Vertex v4 = new Vertex(InstantiateVertex(-2, 2));
-        Vertex v5 = new Vertex(InstantiateVertex(0, 4));
-        CreateEdgesInClique(new Vertex[] {v1, v2, v3, v4, v5});
-        Graph graph = new Graph(new Vertex[] {v1, v2, v3, v4, v5});
-        return new Level(6, graph, defaultBorder);
-    }
-
-    private Level loadLevel7() {
-        Vertex v1 = new Vertex(InstantiateVertex(-2, 2));
-        Vertex v2 = new Vertex(InstantiateVertex(-2, 0));
-        Vertex v3 = new Vertex(InstantiateVertex(-2, -2));
-        Vertex v4 = new Vertex(InstantiateVertex(2, 2));
-        Vertex v5 = new Vertex(InstantiateVertex(2, 0));
-        Vertex v6 = new Vertex(InstantiateVertex(2, -2));
-        CreateEdgesInBipartiteGraph(new Vertex[] {v1, v2, v3}, new Vertex[] {v4, v5, v6});
-        Graph graph = new Graph(new Vertex[] {v1, v2, v3, v4, v5, v6});
-        return new Level(7, graph, defaultBorder);
-    }
-
-    private Level loadLevel8() {
-        Vertex v1 = new Vertex(InstantiateVertex(-2, 2));
-        Vertex v5 = new Vertex(InstantiateVertex(-2, -2));
-        Vertex v4 = new Vertex(InstantiateVertex(2, -2));
-        Vertex v2 = new Vertex(InstantiateVertex(2, 2));
-        Vertex v6 = new Vertex(InstantiateVertex(-3, 0));
-        Vertex v3 = new Vertex(InstantiateVertex(3, 0));
-        Vertex v7 = new Vertex(InstantiateVertex(0, 0));
-        CreateEdge(v1, v2);
-        CreateEdge(v2, v3);
-        CreateEdge(v3, v4);
-        CreateEdge(v4, v5);
-        CreateEdge(v5, v6);
-        CreateEdge(v6, v1);
-        CreateEdge(v7, v1);
-        CreateEdge(v7, v2);
-        CreateEdge(v7, v3);
-        CreateEdge(v7, v4);
-        CreateEdge(v7, v5);
-        CreateEdge(v7, v6);
-        Graph graph = new Graph(new Vertex[] {v1, v2, v3, v4, v5, v6, v7});
-        return new Level(8, graph, defaultBorder);
-    }
-
-    private void CreateEdgesInClique(Vertex[] vertices) {
-        for (int i=0; i<vertices.Length; i++) {
-            for (int j=i+1; j<vertices.Length; j++) {
-                CreateEdge(vertices[i], vertices[j]);
-            }
+        foreach (int[] edge in levelTemplate.GetEdges()) {
+            CreateEdge(vertices[edge[0]], vertices[edge[1]]);
         }
+        Graph graph = new Graph(vertices);
+        return new Level(number, graph, new Rect(levelTemplate.GetBorder()[0], levelTemplate.GetBorder()[1], levelTemplate.GetBorder()[2], levelTemplate.GetBorder()[3]));
     }
 
-    private void CreateEdgesInBipartiteGraph(Vertex[] verticesA, Vertex[] verticesB) {
-        for (int i=0; i<verticesA.Length; i++) {
-            for (int j=0; j<verticesB.Length; j++) {
-                CreateEdge(verticesA[i], verticesB[j]);
-            }
-        }
+    private static Dictionary<int, LevelTemplate> LoadLevelTemplates() {
+        Dictionary<int, LevelTemplate> result = new Dictionary<int, LevelTemplate>();
+        float[] defaultBorderFloat = new float[] {-20, -10, 40, 20};
+
+        float[][] vertices = new float[][] { V(-2, 0), V(2, 0), V(0, 2) };
+        int[][] edges = new int[][] { E(0, 1), E(1, 2), E(2, 0) };
+        int[] moves = new int[2] { 3, 5 };
+        result.Add(1, new LevelTemplate(vertices, edges, defaultBorderFloat, moves));
+
+        vertices = new float[][] { V(2, 2), V(2, -2), V(-2, -2), V(-2, 2) };
+        edges = new int[][] { E(0, 1), E(1, 2), E(2, 3), E(3, 0) };
+        moves = new int[2] { 2, 4 };
+        result.Add(2, new LevelTemplate(vertices, edges, defaultBorderFloat, moves));
+        
+        vertices = new float[][] { V(2, 2), V(2, -2), V(-2, -2), V(-2, 2) };
+        edges = new int[][] { E(0, 1), E(1, 2), E(2, 3), E(3, 0), E(1, 3) };
+        moves = new int[2] { 2, 4 };
+        result.Add(3, new LevelTemplate(vertices, edges, defaultBorderFloat, moves));
+        
+        vertices = new float[][] { V(2, 2), V(2, -2), V(-2, -2), V(-2, 2) };
+        edges = new int[][] { E(0, 1), E(1, 2), E(2, 3), E(3, 0), E(1, 3), E(0, 2) };
+        moves = new int[2] { 3, 5 };
+        result.Add(4, new LevelTemplate(vertices, edges, defaultBorderFloat, moves));
+
+        vertices = new float[][] { V(2, 2), V(2, -2), V(-2, -2), V(-2, 2), V(0, 4) };
+        edges = new int[][] { E(0, 1), E(1, 2), E(2, 3), E(3, 0), E(1, 3), E(0, 2), E(0, 4), E(3, 4) };
+        moves = new int[2] { 3, 5 };
+        result.Add(5, new LevelTemplate(vertices, edges, defaultBorderFloat, moves));
+
+        vertices = new float[][] { V(2, 2), V(2, -2), V(-2, -2), V(-2, 2), V(0, 4) };
+        edges = new int[][] { E(0, 1), E(1, 2), E(2, 3), E(3, 0), E(1, 3), E(0, 2), E(0, 4), E(1, 4), E(2, 4), E(3, 4) };
+        moves = new int[2] { 5, 7 };
+        result.Add(6, new LevelTemplate(vertices, edges, defaultBorderFloat, moves));
+
+        vertices = new float[][] { V(-2, 2), V(-2, 0), V(-2, -2), V(2, 2), V(2, 0), V(2, -2) };
+        edges = new int[][] { E(0, 3), E(0, 4), E(0, 5), E(1, 3), E(1, 4), E(1, 5), E(2, 3), E(2, 4), E(2, 5) };
+        moves = new int[2] { 3, 5 };
+        result.Add(7, new LevelTemplate(vertices, edges, defaultBorderFloat, moves));
+
+        vertices = new float[][] { V(-2, 2), V(2, 2), V(3, 0), V(2, -2), V(-2, -2), V(-3, 0), V(0, 0) };
+        edges = new int[][] { E(0, 1), E(1, 2), E(2, 3), E(3, 4), E(4, 5), E(5, 0), E(6, 0), E(6, 1), E(6, 2), E(6, 3), E(6, 4), E(6, 5) };
+        moves = new int[2] { 3, 5 };
+        result.Add(8, new LevelTemplate(vertices, edges, defaultBorderFloat, moves));
+
+        return result;
+    }
+
+    private static float[] V(float x, float y) {
+        return new float[] { x, y };
+    }
+
+    private static int[] E(int v1, int v2) {
+        return new int[] {v1, v2};
     }
 
     private GameObject InstantiateVertex(float x, float y) {

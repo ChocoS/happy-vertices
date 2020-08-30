@@ -19,7 +19,7 @@ public static class PlayerContextManager {
 
     public static PlayerContext Load() {
         if (File.Exists(path)) {
-            Debug.Log("save file found");
+            Debug.Log("save file found in path: " + path);
             FileStream stream = new FileStream(path, FileMode.Open);
             playerContext = formatter.Deserialize(stream) as PlayerContext;
             stream.Close();

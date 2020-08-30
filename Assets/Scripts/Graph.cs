@@ -5,7 +5,7 @@ public class Graph {
 
     private List<Vertex> vertices = new List<Vertex>();
 
-    public Graph(Vertex[] vertices) {
+    public Graph(List<Vertex> vertices) {
         this.vertices.AddRange(vertices);
         UpdateVerticesState();
     }
