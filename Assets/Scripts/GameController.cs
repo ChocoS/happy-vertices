@@ -191,7 +191,7 @@ public class GameController : MonoBehaviour
     }
 
     private void PrepareNewLevel() {
-        currentLevel = levelManager.loadLevel(CURRENT_LEVEL);
+        currentLevel = levelManager.LoadLevel(CURRENT_LEVEL);
         DrawBorder();
         UpdateAllVerticesGameObjects();
         currentLevelMoveCounter = 0;

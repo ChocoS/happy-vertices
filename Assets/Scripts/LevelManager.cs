@@ -6,14 +6,15 @@ public class LevelManager : MonoBehaviour
 {
     public ResourcesController resourcesController;
 
-    private static Dictionary<int, LevelTemplate> levelTemplates = LoadLevelTemplates();
+    public static Dictionary<int, LevelTemplate> levelTemplates = LoadLevelTemplates();
 
-    public Level loadLevel(int level) {
-        clearAll();
-        return LoadLevelFromTemplate(levelTemplates[level], level);
+    public Level LoadLevel(int number) {
+        ClearAll();
+        return LoadLevelFromTemplate(number);
     }
 
-    private Level LoadLevelFromTemplate(LevelTemplate levelTemplate, int number){
+    private Level LoadLevelFromTemplate(int number) {
+        LevelTemplate levelTemplate = levelTemplates[number];
         List<Vertex> vertices = new List<Vertex>();
         foreach (float[] vertex in levelTemplate.GetVertices()) {
             vertices.Add(new Vertex(InstantiateVertex(vertex[0], vertex[1])));
@@ -85,10 +86,10 @@ public class LevelManager : MonoBehaviour
     }
 
     private void CreateEdge(Vertex v1, Vertex v2) {
-        v1.AddNeighbour(v2).SetGameObject(instantiateEdge(v1.GetGameObject(), v2.GetGameObject()));
+        v1.AddNeighbour(v2).SetGameObject(InstantiateEdge(v1.GetGameObject(), v2.GetGameObject()));
     }
 
-    private GameObject instantiateEdge(GameObject v1, GameObject v2) {
+    private GameObject InstantiateEdge(GameObject v1, GameObject v2) {
         GameObject line = Instantiate(resourcesController.edgePrefab, Vector3.zero, Quaternion.identity);
         line.GetComponent<LineRenderer>().SetPosition(0, v1.transform.position);
         line.GetComponent<LineRenderer>().SetPosition(1, v2.transform.position);
@@ -96,7 +97,7 @@ public class LevelManager : MonoBehaviour
         return line;
     }
 
-    private void clearAll() {
+    private void ClearAll() {
         GameObject[] vertices = GameObject.FindGameObjectsWithTag(resourcesController.vertexTag);
         GameObject[] edges = GameObject.FindGameObjectsWithTag(resourcesController.edgeTag);
         foreach (GameObject vertex in vertices) {
