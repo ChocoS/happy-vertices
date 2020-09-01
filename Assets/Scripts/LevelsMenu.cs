@@ -11,6 +11,7 @@ public class LevelsMenu : MonoBehaviour
     private static Vector2 levelButtonStartingPos = new Vector2(-120, 60);
     private static float levelButtonMargin = 60;
 
+    public GameObject backButton;
     public MenuResourcesController resources;
 
     void Start() {
@@ -22,6 +23,8 @@ public class LevelsMenu : MonoBehaviour
             levelButton.GetComponent<Button>().onClick.AddListener(() => PlayLevel(levelTemplate.Key));
             levelButton.GetComponentInChildren<TextMeshProUGUI>().text = "" + levelTemplate.Key;
         }
+        backButton.transform.position = new Vector2(backButton.transform.position.x,
+            levelButtonMargin * ((LevelManager.levelTemplates.Count-1) / levelButtonsPerRow + 1));
     }
 
     private Vector2 CalculatePosition(int row, int col) {
