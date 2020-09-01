@@ -36,4 +36,11 @@ public static class PlayerContextManager {
         }
         return playerContext;
     }
+
+    public static void Reset() {
+        if (File.Exists(path)) {
+            File.Delete(path);
+            Debug.Log("save file deleted in path: " + path);
+        }
+    }
 }
