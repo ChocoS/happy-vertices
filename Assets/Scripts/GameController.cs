@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
-    public static int CURRENT_LEVEL = 0;
+    public static int CURRENT_LEVEL = -1;
 
     private static float MAX_VERTEX_PROXIMITY = 1.0f;
 
@@ -26,7 +26,7 @@ public class GameController : MonoBehaviour
     private bool multiTouchInPreviousFrame = false;
 
     void Start() {
-        if (CURRENT_LEVEL != 0) {
+        if (CURRENT_LEVEL != -1) {
             PrepareNewLevel();
         }
         debug = GameObject.FindGameObjectWithTag("Debug").GetComponent<DebugController>();

@@ -14,17 +14,25 @@ public class LevelsMenu : MonoBehaviour
     public GameObject backButton;
     public MenuResourcesController resources;
 
+    private List<GameObject> levelButtons = new List<GameObject>();
+
     void Start() {
-        foreach (KeyValuePair<int, LevelTemplate> levelTemplate in LevelManager.levelTemplates) {
-            int row = (levelTemplate.Key-1) / levelButtonsPerRow;
-            int col = (levelTemplate.Key-1) % levelButtonsPerRow;
+        for (int i=0; i<LevelManager.levelTemplates.Count; i++) {
+            LevelTemplate levelTemplate = LevelManager.levelTemplates[i];
+            int row = i / levelButtonsPerRow;
+            int col = i % levelButtonsPerRow;
             GameObject levelButton = Instantiate(resources.levelButton, CalculatePosition(row, col), Quaternion.identity);
             levelButton.transform.SetParent(gameObject.transform, false);
-            levelButton.GetComponent<Button>().onClick.AddListener(() => PlayLevel(levelTemplate.Key));
-            levelButton.GetComponentInChildren<TextMeshProUGUI>().text = "" + levelTemplate.Key;
+            AddListener(levelButton.GetComponent<Button>(), i);
+            levelButton.GetComponentInChildren<TextMeshProUGUI>().text = "" + i;
+            levelButtons.Add(levelButton);
         }
         backButton.transform.position = new Vector2(backButton.transform.position.x,
             levelButtonMargin * ((LevelManager.levelTemplates.Count-1) / levelButtonsPerRow + 1));
+    }
+
+    private void AddListener(Button button, int parameter) {
+        button.onClick.AddListener(delegate { PlayLevel(parameter); });
     }
 
     private Vector2 CalculatePosition(int row, int col) {

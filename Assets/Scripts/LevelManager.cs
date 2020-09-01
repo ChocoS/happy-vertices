@@ -8,7 +8,7 @@ public class LevelManager : MonoBehaviour
 
     public ResourcesController resourcesController;
 
-    public static Dictionary<int, LevelTemplate> levelTemplates = LoadLevelTemplates();
+    public static List<LevelTemplate> levelTemplates = LoadLevelTemplates();
 
     public Level LoadLevel(int number) {
         ClearAll();
@@ -51,48 +51,48 @@ public class LevelManager : MonoBehaviour
             maxX - minX + 2 * defaultBorderMargin, maxY - minY + 2 * defaultBorderMargin);
     }
 
-    private static Dictionary<int, LevelTemplate> LoadLevelTemplates() {
-        Dictionary<int, LevelTemplate> result = new Dictionary<int, LevelTemplate>();
+    private static List<LevelTemplate> LoadLevelTemplates() {
+        List<LevelTemplate> result = new List<LevelTemplate>();
 
         float[][] vertices = new float[][] { V(-2, 0), V(2, 0), V(0, 2) };
         int[][] edges = new int[][] { E(0, 1), E(1, 2), E(2, 0) };
         int[] moves = new int[2] { 3, 5 };
-        result.Add(1, new LevelTemplate(vertices, edges, moves));
+        result.Add(new LevelTemplate(vertices, edges, moves));
 
         vertices = new float[][] { V(2, 2), V(2, -2), V(-2, -2), V(-2, 2) };
         edges = new int[][] { E(0, 1), E(1, 2), E(2, 3), E(3, 0) };
         moves = new int[2] { 2, 4 };
-        result.Add(2, new LevelTemplate(vertices, edges, moves));
+        result.Add(new LevelTemplate(vertices, edges, moves));
         
         vertices = new float[][] { V(2, 2), V(2, -2), V(-2, -2), V(-2, 2) };
         edges = new int[][] { E(0, 1), E(1, 2), E(2, 3), E(3, 0), E(1, 3) };
         moves = new int[2] { 2, 4 };
-        result.Add(3, new LevelTemplate(vertices, edges, moves));
+        result.Add(new LevelTemplate(vertices, edges, moves));
         
         vertices = new float[][] { V(2, 2), V(2, -2), V(-2, -2), V(-2, 2) };
         edges = new int[][] { E(0, 1), E(1, 2), E(2, 3), E(3, 0), E(1, 3), E(0, 2) };
         moves = new int[2] { 3, 5 };
-        result.Add(4, new LevelTemplate(vertices, edges, moves));
+        result.Add(new LevelTemplate(vertices, edges, moves));
 
         vertices = new float[][] { V(2, 2), V(2, -2), V(-2, -2), V(-2, 2), V(0, 4) };
         edges = new int[][] { E(0, 1), E(1, 2), E(2, 3), E(3, 0), E(1, 3), E(0, 2), E(0, 4), E(3, 4) };
         moves = new int[2] { 2, 5 };
-        result.Add(5, new LevelTemplate(vertices, edges, moves));
+        result.Add(new LevelTemplate(vertices, edges, moves));
 
         vertices = new float[][] { V(2, 2), V(2, -2), V(-2, -2), V(-2, 2), V(0, 4) };
         edges = new int[][] { E(0, 1), E(1, 2), E(2, 3), E(3, 0), E(1, 3), E(0, 2), E(0, 4), E(1, 4), E(2, 4), E(3, 4) };
         moves = new int[2] { 5, 7 };
-        result.Add(6, new LevelTemplate(vertices, edges, moves));
+        result.Add(new LevelTemplate(vertices, edges, moves));
 
         vertices = new float[][] { V(-2, 2), V(-2, 0), V(-2, -2), V(2, 2), V(2, 0), V(2, -2) };
         edges = new int[][] { E(0, 3), E(0, 4), E(0, 5), E(1, 3), E(1, 4), E(1, 5), E(2, 3), E(2, 4), E(2, 5) };
         moves = new int[2] { 3, 5 };
-        result.Add(7, new LevelTemplate(vertices, edges, moves));
+        result.Add(new LevelTemplate(vertices, edges, moves));
 
         vertices = new float[][] { V(-2, 2), V(2, 2), V(3, 0), V(2, -2), V(-2, -2), V(-3, 0), V(0, 0) };
         edges = new int[][] { E(0, 1), E(1, 2), E(2, 3), E(3, 4), E(4, 5), E(5, 0), E(6, 0), E(6, 1), E(6, 2), E(6, 3), E(6, 4), E(6, 5) };
         moves = new int[2] { 3, 5 };
-        result.Add(8, new LevelTemplate(vertices, edges, moves));
+        result.Add(new LevelTemplate(vertices, edges, moves));
 
         return result;
     }
