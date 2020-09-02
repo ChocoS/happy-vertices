@@ -40,6 +40,7 @@ public static class PlayerContextManager {
     public static void Reset() {
         if (File.Exists(path)) {
             File.Delete(path);
+            playerContext = null;
             Debug.Log("save file deleted in path: " + path);
         }
     }

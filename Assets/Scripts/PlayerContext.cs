@@ -7,14 +7,18 @@ public class PlayerContext {
     private Dictionary<int, int> bestNumberOfMovesPerLevel = new Dictionary<int, int>();
 
     public int GetBestNumberOfMovesForLevel(int level) {
-        if (bestNumberOfMovesPerLevel.ContainsKey(level)) {
+        if (ExistsBestNumberOfMovesForLevel(level)) {
             return bestNumberOfMovesPerLevel[level];
         }
-        return int.MaxValue;
+        return -1;
+    }
+
+    public bool ExistsBestNumberOfMovesForLevel(int level) {
+        return bestNumberOfMovesPerLevel.ContainsKey(level);
     }
 
     public void UpdateBestNumberOfMoves(int level, int numberOfMoves) {
-        if (numberOfMoves < GetBestNumberOfMovesForLevel(level)) {
+        if (!ExistsBestNumberOfMovesForLevel(level) || numberOfMoves < GetBestNumberOfMovesForLevel(level)) {
             bestNumberOfMovesPerLevel[level] = numberOfMoves;
         }
     }

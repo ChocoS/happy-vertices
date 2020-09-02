@@ -374,6 +374,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelButton: {fileID: 1413499991758466113, guid: 11ee6f4dfbbdb0b458ada0ec15460b08,
     type: 3}
+  vertexAsleepSprite: {fileID: 21300000, guid: 4405637543b41b04dab516996e15396c, type: 3}
+  vertexNormalSprite: {fileID: 21300000, guid: 8b991af8d92e2074e8533c39389bed36, type: 3}
+  vertexHappySprite: {fileID: 21300000, guid: becf4d787d8c09c428577165ce33ec03, type: 3}
+  activeButtonGradient: {fileID: 11400000, guid: fc299a3f107123a4e8eb2ef443cbfa74,
+    type: 2}
+  inactiveButtonGradient: {fileID: 11400000, guid: 710beaa576302d5408963ef5115057b1,
+    type: 2}
 --- !u!4 &106829397
 Transform:
   m_ObjectHideFlags: 0

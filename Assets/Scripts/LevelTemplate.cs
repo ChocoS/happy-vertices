@@ -21,4 +21,8 @@ public class LevelTemplate
     public int[][] GetEdges() {
         return edges;
     }
+
+    public int[] GetMoves() {
+        return moves;
+    }
 }

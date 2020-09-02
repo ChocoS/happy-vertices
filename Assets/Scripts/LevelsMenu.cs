@@ -27,8 +27,77 @@ public class LevelsMenu : MonoBehaviour
             levelButton.GetComponentInChildren<TextMeshProUGUI>().text = "" + i;
             levelButtons.Add(levelButton);
         }
+        AdjustBackButtonPosition();
+        UpdateLevelButtonsStates();
+    }
+
+    private void OnEnable() {
+        UpdateLevelButtonsStates();
+    }
+
+    private void AdjustBackButtonPosition() {
         backButton.transform.position = new Vector2(backButton.transform.position.x,
             levelButtonMargin * ((LevelManager.levelTemplates.Count-1) / levelButtonsPerRow + 1));
+    }
+
+    private void UpdateLevelButtonsStates() {
+        for (int i=0; i<levelButtons.Count; i++) {
+            UpdateLevelButtonState(levelButtons[i], i);
+        }
+    }
+
+    private void UpdateLevelButtonState(GameObject levelButton, int levelNumber) {
+        if (PlayerContextManager.GetCurrentContext().ExistsBestNumberOfMovesForLevel(levelNumber)) {
+            int playerBest = PlayerContextManager.GetCurrentContext().GetBestNumberOfMovesForLevel(levelNumber);
+            int[] moveThreshold = LevelManager.levelTemplates[levelNumber].GetMoves();
+            if (playerBest <= moveThreshold[0]) {
+                MarkMedals(levelButton, 3);
+            } else if (playerBest <= moveThreshold[1]) {
+                MarkMedals(levelButton, 2);
+            } else {
+                MarkMedals(levelButton, 1);
+            }
+        } else {
+            MarkMedals(levelButton, 0);
+            if (levelNumber > 0) {
+                bool enableButton = PlayerContextManager.GetCurrentContext().ExistsBestNumberOfMovesForLevel(levelNumber - 1);
+                if (enableButton) {
+                    EnableButton(levelButton);
+                } else {
+                    DisableButton(levelButton);
+                }
+            }
+        }
+    }
+
+    private void EnableButton(GameObject levelButton) {
+        levelButton.GetComponent<Button>().interactable = true;
+        levelButton.GetComponentInChildren<TextMeshProUGUI>().colorGradientPreset = resources.activeButtonGradient;
+        foreach (Image image in levelButton.GetComponentsInChildren<Image>()) {
+            image.enabled = true;
+        }
+    }
+
+    private void DisableButton(GameObject levelButton) {
+        levelButton.GetComponent<Button>().interactable = false;
+        levelButton.GetComponentInChildren<TextMeshProUGUI>().colorGradientPreset = resources.inactiveButtonGradient;
+        foreach (Image image in levelButton.GetComponentsInChildren<Image>()) {
+            image.enabled = false;
+        }
+    }
+
+    private void MarkMedals(GameObject levelButton, int markedMedals) {
+        List<Image> images = new List<Image>();
+        levelButton.GetComponentsInChildren<Image>(images);
+        Image image1 = images.Find(image => image.name == "Image1");
+        Image image2 = images.Find(image => image.name == "Image2");
+        Image image3 = images.Find(image => image.name == "Image3");
+        switch (markedMedals) {
+            case 0: image1.sprite = resources.vertexAsleepSprite; image2.sprite = resources.vertexAsleepSprite; image3.sprite = resources.vertexAsleepSprite; break;
+            case 1: image1.sprite = resources.vertexNormalSprite; image2.sprite = resources.vertexAsleepSprite; image3.sprite = resources.vertexAsleepSprite; break;
+            case 2: image1.sprite = resources.vertexNormalSprite; image2.sprite = resources.vertexNormalSprite; image3.sprite = resources.vertexAsleepSprite; break;
+            case 3: image1.sprite = resources.vertexHappySprite; image2.sprite = resources.vertexHappySprite; image3.sprite = resources.vertexHappySprite; break;
+        }
     }
 
     private void AddListener(Button button, int parameter) {
