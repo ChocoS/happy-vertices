@@ -215,7 +215,11 @@ public class GameController : MonoBehaviour
 
     private void FinishLevel() {
         PlayerContextManager.UpdateBestNumberOfMoves(CURRENT_LEVEL, currentLevelMoveCounter);
-        CURRENT_LEVEL++;
+        if (CURRENT_LEVEL == LevelManager.levelTemplates.Count - 1) {
+            SceneManager.LoadScene("MenuScene");
+        } else {
+            CURRENT_LEVEL++;
+        }
     }
 
     private void UpdateAllVerticesGameObjects() {
