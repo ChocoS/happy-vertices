@@ -96,7 +96,17 @@ public class LevelManager : MonoBehaviour
 
         vertices = new float[][] { V(0, 0), V(0, 2), V(2, 0), V(0, -2), V(-2, 0), V(-3, 3), V(3, 3), V(3, -3), V(-3, -3) };
         edges = new int[][] { E(0, 1), E(0, 2), E(0, 3), E(0, 4), E(2, 3), E(4, 1),  E(5, 1), E(5, 6), E(5, 4), E(5, 8), E(6, 1), E(6, 2), E(6, 7), E(7, 2), E(7, 3), E(7, 8), E(8, 3), E(8, 4) };
-        moves = new int[2] { 7, 10 };
+        moves = new int[2] { 6, 9 };
+        result.Add(new LevelTemplate(vertices, edges, moves));
+
+        vertices = new float[][] { V(-3, 2), V(-1, 2), V(1, 2), V(-2, 0), V(0, 0), V(2, 0), V(-3, -2), V(-1, -2), V(1, -2) };
+        edges = new int[][] { E(0, 1), E(0, 3), E(1, 2), E(1, 4), E(2, 5), E(3, 4), E(3, 6), E(4, 7), E(5, 8), E(6, 7), E(7, 8) };
+        moves = new int[2] { 4, 7 };
+        result.Add(new LevelTemplate(vertices, edges, moves));
+
+        vertices = new float[][] { V(-3, 1), V(-1, 1), V(1, 1), V(3, 1), V(-3, -1), V(-1, -1), V(1, -1), V(3, -1) };
+        edges = new int[][] { E(0, 1), E(0, 4), E(1, 2), E(1, 5), E(2, 3), E(2, 6), E(3, 7), E(4, 5), E(5, 6), E(6, 7) };
+        moves = new int[2] { 2, 5 };
         result.Add(new LevelTemplate(vertices, edges, moves));
 
         return result;
