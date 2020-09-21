@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 
@@ -13,6 +12,7 @@ public class LevelsMenu : MonoBehaviour
 
     public GameObject backButton;
     public MenuResourcesController resources;
+    public LevelLoader levelLoader;
 
     private List<GameObject> levelButtons = new List<GameObject>();
 
@@ -109,7 +109,6 @@ public class LevelsMenu : MonoBehaviour
     }
 
     public void PlayLevel(int level) {
-        GameController.CURRENT_LEVEL = level;
-        SceneManager.LoadScene("GameScene");
+        levelLoader.LoadLevel(level);
     }
 }

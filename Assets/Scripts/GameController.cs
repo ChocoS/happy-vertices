@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
     public static int CURRENT_LEVEL = -1;
-
     private static float MAX_VERTEX_PROXIMITY = 1.0f;
 
     public ResourcesController resourcesController;
     public LevelManager levelManager;
     public GameInfoPanelController gameInfoPanelController;
+    public LevelLoader levelLoader;
 
     private GameObject currentEdge;
     private Level currentLevel;
@@ -39,7 +38,6 @@ public class GameController : MonoBehaviour
         if (currentLevel != null && currentLevel.GetGraph().AllVerticesHappy()) {
             if (AnyInput()) {
                 FinishLevel();
-                PrepareNewLevel();
             }
         }
 
@@ -77,7 +75,6 @@ public class GameController : MonoBehaviour
                 HandleClickedUp();
             }
         }
-
         if (Input.GetAxis("Mouse ScrollWheel") > 0) {
             Camera.main.orthographicSize = Mathf.Max(Camera.main.orthographicSize-zoomSensitivity, PinchZoom.MIN_ZOOM);
         } else if (Input.GetAxis("Mouse ScrollWheel") < 0) {
@@ -216,9 +213,10 @@ public class GameController : MonoBehaviour
     private void FinishLevel() {
         PlayerContextManager.UpdateBestNumberOfMoves(CURRENT_LEVEL, currentLevelMoveCounter);
         if (CURRENT_LEVEL == LevelManager.levelTemplates.Count - 1) {
-            SceneManager.LoadScene("MenuScene");
+            levelLoader.LoadMenu();
         } else {
             CURRENT_LEVEL++;
+            levelLoader.LoadLevel(CURRENT_LEVEL);
         }
     }
 
