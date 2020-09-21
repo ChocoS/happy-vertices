@@ -94,6 +94,11 @@ public class LevelManager : MonoBehaviour
         moves = new int[2] { 3, 6 };
         result.Add(new LevelTemplate(vertices, edges, moves));
 
+        vertices = new float[][] { V(0, 0), V(0, 2), V(2, 0), V(0, -2), V(-2, 0), V(-3, 3), V(3, 3), V(3, -3), V(-3, -3) };
+        edges = new int[][] { E(0, 1), E(0, 2), E(0, 3), E(0, 4), E(2, 3), E(4, 1),  E(5, 1), E(5, 6), E(5, 4), E(5, 8), E(6, 1), E(6, 2), E(6, 7), E(7, 2), E(7, 3), E(7, 8), E(8, 3), E(8, 4) };
+        moves = new int[2] { 7, 10 };
+        result.Add(new LevelTemplate(vertices, edges, moves));
+
         return result;
     }
 
