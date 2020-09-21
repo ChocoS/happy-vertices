@@ -24,7 +24,7 @@ public class LevelsMenu : MonoBehaviour
             GameObject levelButton = Instantiate(resources.levelButton, CalculatePosition(row, col), Quaternion.identity);
             levelButton.transform.SetParent(gameObject.transform, false);
             AddListener(levelButton.GetComponent<Button>(), i);
-            levelButton.GetComponentInChildren<TextMeshProUGUI>().text = "" + i;
+            levelButton.GetComponentInChildren<TextMeshProUGUI>().text = "" + (i + 1);
             levelButtons.Add(levelButton);
         }
         AdjustBackButtonPosition();
@@ -37,7 +37,7 @@ public class LevelsMenu : MonoBehaviour
 
     private void AdjustBackButtonPosition() {
         backButton.transform.position = new Vector2(backButton.transform.position.x,
-            levelButtonMargin * ((LevelManager.levelTemplates.Count-1) / levelButtonsPerRow + 1));
+            backButton.transform.position.y - levelButtonMargin * ((LevelManager.levelTemplates.Count-1) / levelButtonsPerRow - 1));
     }
 
     private void UpdateLevelButtonsStates() {
