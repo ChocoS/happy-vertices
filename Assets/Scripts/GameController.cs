@@ -20,6 +20,7 @@ public class GameController : MonoBehaviour
     private float zoomSensitivity = 0.2f;
     private int currentLevelMoveCounter = 0;
     private List<GameObject> borders = new List<GameObject>();
+    private bool levelFinished = false;
 
     private DebugController debug;
     private bool multiTouchInPreviousFrame = false;
@@ -36,7 +37,7 @@ public class GameController : MonoBehaviour
         debug.AddText("Debug: ");
 
         if (currentLevel != null && currentLevel.GetGraph().AllVerticesHappy()) {
-            if (AnyInput()) {
+            if (AnyInput() && !levelFinished) {
                 FinishLevel();
             }
         }
@@ -193,6 +194,7 @@ public class GameController : MonoBehaviour
         UpdateAllVerticesGameObjects();
         currentLevelMoveCounter = 0;
         gameInfoPanelController.setNumberOfMoves(0);
+        levelFinished = false;
     }
 
     private void DrawBorder() {
@@ -211,6 +213,7 @@ public class GameController : MonoBehaviour
     }
 
     private void FinishLevel() {
+        levelFinished = true;
         PlayerContextManager.UpdateBestNumberOfMoves(CURRENT_LEVEL, currentLevelMoveCounter);
         if (CURRENT_LEVEL == LevelManager.levelTemplates.Count - 1) {
             levelLoader.LoadMenu();
