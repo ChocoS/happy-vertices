@@ -36,8 +36,8 @@ public class LevelsMenu : MonoBehaviour
     }
 
     private void AdjustBackButtonPosition() {
-        backButton.transform.position = new Vector2(backButton.transform.position.x,
-            backButton.transform.position.y - levelButtonMargin * ((LevelManager.levelTemplates.Count-1) / levelButtonsPerRow - 1));
+        backButton.transform.localPosition = new Vector2(backButton.transform.localPosition.x,
+            levelButtonStartingPos.y - levelButtonMargin * ((LevelManager.levelTemplates.Count-1) / levelButtonsPerRow + 1));
     }
 
     private void UpdateLevelButtonsStates() {
