@@ -19,13 +19,11 @@ public static class PlayerContextManager {
 
     public static PlayerContext Load() {
         if (File.Exists(path)) {
-            Debug.Log("save file found in path: " + path);
             FileStream stream = new FileStream(path, FileMode.Open);
             playerContext = formatter.Deserialize(stream) as PlayerContext;
             stream.Close();
             return playerContext;
         }
-        Debug.Log("save file not found in path: " + path);
         playerContext = new PlayerContext();
         return playerContext;
     }
@@ -41,7 +39,6 @@ public static class PlayerContextManager {
         if (File.Exists(path)) {
             File.Delete(path);
             playerContext = null;
-            Debug.Log("save file deleted in path: " + path);
         }
     }
 }

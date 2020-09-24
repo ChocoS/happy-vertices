@@ -22,20 +22,16 @@ public class GameController : MonoBehaviour
     private List<GameObject> borders = new List<GameObject>();
     private bool levelFinished = false;
 
-    private DebugController debug;
     private bool multiTouchInPreviousFrame = false;
 
     void Start() {
         if (CURRENT_LEVEL != -1) {
             PrepareNewLevel();
         }
-        debug = GameObject.FindGameObjectWithTag("Debug").GetComponent<DebugController>();
     }
 
     void Update()
     {
-        debug.AddText("Debug: ");
-
         if (currentLevel != null && currentLevel.GetGraph().AllVerticesHappy()) {
             if (AnyInput() && !levelFinished) {
                 FinishLevel();
@@ -43,11 +39,9 @@ public class GameController : MonoBehaviour
         }
 
         if (Input.touchSupported) {
-            debug.AddText("Touch supported");
             if (Input.touchCount == 1) {
                 Touch touch = Input.GetTouch(0);
                 Vector3 activePosition = getTouchActivePosition(touch);
-                debug.AddText("Input.touchCount == 1, active position: " + activePosition);
                 if (touch.phase == TouchPhase.Began) {
                     HandleClickedDown(activePosition);
                 } else if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary) {
@@ -66,11 +60,9 @@ public class GameController : MonoBehaviour
                 multiTouchInPreviousFrame = false;
             }
         } else {
-            debug.AddText("Touch NOT supported");
             if (Input.GetMouseButtonDown(0)) {
                 HandleClickedDown(GetMousePosition());
             } else if (Input.GetMouseButton(0)) {
-                debug.AddText("" +GetMousePosition());
                 HandleClicked(GetMousePosition());
             } else if (Input.GetMouseButtonUp(0)) {
                 HandleClickedUp();
@@ -81,11 +73,6 @@ public class GameController : MonoBehaviour
         } else if (Input.GetAxis("Mouse ScrollWheel") < 0) {
             Camera.main.orthographicSize = Mathf.Min(Camera.main.orthographicSize+zoomSensitivity, PinchZoom.MAX_ZOOM);
         }
-
-        debug.AddText("Camera.main.orthographicSize: " + Camera.main.orthographicSize);
-        debug.AddText("Camera.main.transform.position: " + Camera.main.transform.position);
-
-        debug.AddText("PlayerContext: " + PlayerContextManager.GetCurrentContext());
     }
 
     private Vector3 getTouchActivePosition(Touch touch) {
@@ -107,13 +94,10 @@ public class GameController : MonoBehaviour
     }
 
     private bool AnyInput() {
-        debug.AddText("AnyInput Input.anyKeyDown: " + Input.anyKeyDown);
-        debug.AddText("AnyInput Input.Input.touchCount > 0: " + (Input.touchCount > 0));
         return Input.anyKeyDown || Input.touchCount > 0;
     }
 
     private void HandleClickedDown(Vector3 activePosition) {
-        debug.AddText("HandleClickedDown " + activePosition);
         if (GetVertexThatContainsPoint(GetAllVertexGameObjects(), activePosition) != null) {
             currentEdge = SpawnTempEdge(activePosition);
         } else {
@@ -122,12 +106,9 @@ public class GameController : MonoBehaviour
     }
 
     private void HandleClicked(Vector3 activePosition) {
-        debug.AddText("HandleClicked " + activePosition);
         if (currentEdge != null) {
             currentEdge.GetComponent<LineRenderer>().SetPosition(1, activePosition);
         } else {
-            debug.AddText("HandleClicked dragStartingPosition " + dragStartingPosition);
-            debug.AddText("HandleClicked dragStartingPosition - activePosition " + (dragStartingPosition - activePosition));
             Camera.main.transform.position += dragStartingPosition - activePosition;
             ClampCameraTransformPosition();
         }
@@ -141,7 +122,6 @@ public class GameController : MonoBehaviour
     }
 
     private void HandleClickedUp() {
-        debug.AddText("HandleClickedUp");
         if (currentEdge != null) {
             LineRenderer lineRenderer = currentEdge.GetComponent<LineRenderer>();
             Vector2 point0 = lineRenderer.GetPosition(0);

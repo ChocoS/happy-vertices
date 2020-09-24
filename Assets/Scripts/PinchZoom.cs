@@ -7,12 +7,6 @@ public class PinchZoom : MonoBehaviour
     public static float MIN_ZOOM = 2.0f;
     public static float MAX_ZOOM = 12.0f;
 
-    private DebugController debug;
-
-    void Start() {
-        debug = GameObject.FindGameObjectWithTag("Debug").GetComponent<DebugController>();
-    }
-
     void Update() {
         if (Input.touchCount == 2) {
             Touch touch0 = Input.GetTouch(0);
