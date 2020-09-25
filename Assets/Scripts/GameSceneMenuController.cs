@@ -13,4 +13,8 @@ public class GameSceneMenuController : MonoBehaviour
     public void ReloadLevel() {
         levelLoader.LoadLevel(GameController.CURRENT_LEVEL);
     }
+
+    public void LoadNextLevel() {
+        levelLoader.LoadLevel(GameController.CURRENT_LEVEL + 1);
+    }
 }

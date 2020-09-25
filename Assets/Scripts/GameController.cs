@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour
     public LevelManager levelManager;
     public GameInfoPanelController gameInfoPanelController;
     public LevelLoader levelLoader;
+    public GameObject nextLevelButton;
 
     private GameObject currentEdge;
     private Level currentLevel;
@@ -29,10 +30,8 @@ public class GameController : MonoBehaviour
     }
 
     void Update() {
-        if (currentLevel.GetGraph().AllVerticesHappy()) {
-            if (AnyInput() && !levelFinished) {
-                FinishLevel();
-            }
+        if (currentLevel.GetGraph().AllVerticesHappy() && !levelFinished) {
+            FinishLevel();
         }
 
         if (Input.touchSupported) {
@@ -88,10 +87,6 @@ public class GameController : MonoBehaviour
         Vector3 result = activeMiddle - previousMiddle;
         result.z = 0;
         return result;
-    }
-
-    private bool AnyInput() {
-        return Input.anyKeyDown || Input.touchCount > 0;
     }
 
     private void HandleClickedDown(Vector3 activePosition) {
@@ -177,12 +172,8 @@ public class GameController : MonoBehaviour
     private void FinishLevel() {
         levelFinished = true;
         PlayerContextManager.UpdateBestNumberOfMoves(CURRENT_LEVEL, currentLevelMoveCounter);
-        if (CURRENT_LEVEL == LevelManager.levelTemplates.Count - 1) {
-            levelLoader.LoadMenu();
-        } else {
-            CURRENT_LEVEL++;
-            levelLoader.LoadLevel(CURRENT_LEVEL);
-        }
+        gameInfoPanelController.setBestNumberOfMoves(PlayerContextManager.GetCurrentContext().GetBestNumberOfMovesForLevel(CURRENT_LEVEL));
+        nextLevelButton.SetActive(true);
     }
 
     private void UpdateAllVerticesGameObjects() {

@@ -8,7 +8,11 @@ public class LevelLoader : MonoBehaviour
     public Animator animator;
 
     public void LoadLevel(int level) {
-        StartCoroutine(LoadLevelCoroutine(level));
+        if (level > LevelManager.levelTemplates.Count - 1) {
+            LoadMenu();
+        } else {
+            StartCoroutine(LoadLevelCoroutine(level));
+        }
     }
 
     public void LoadMenu() {
