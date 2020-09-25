@@ -170,27 +170,11 @@ public class GameController : MonoBehaviour
 
     private void PrepareNewLevel() {
         currentLevel = levelManager.LoadLevel(CURRENT_LEVEL);
-        DrawBorder();
         UpdateAllVerticesGameObjects();
         currentLevelMoveCounter = 0;
         gameInfoPanelController.setNumberOfMoves(0);
         gameInfoPanelController.setBestNumberOfMoves(PlayerContextManager.GetCurrentContext().GetBestNumberOfMovesForLevel(CURRENT_LEVEL));
         levelFinished = false;
-    }
-
-    private void DrawBorder() {
-        foreach (GameObject border in borders) {
-            Destroy(border);
-        }
-        borders.Clear();
-        Vector2 bottomLeft = new Vector2(currentLevel.GetBoundry().xMin, currentLevel.GetBoundry().yMin);
-        Vector2 topLeft = new Vector2(currentLevel.GetBoundry().xMin, currentLevel.GetBoundry().yMax);
-        Vector2 bottomRight = new Vector2(currentLevel.GetBoundry().xMax, currentLevel.GetBoundry().yMin);
-        Vector2 topRight = new Vector2(currentLevel.GetBoundry().xMax, currentLevel.GetBoundry().yMax);
-        borders.Add(SpawnBorder(bottomLeft, topLeft));
-        borders.Add(SpawnBorder(topLeft, topRight));
-        borders.Add(SpawnBorder(topRight, bottomRight));
-        borders.Add(SpawnBorder(bottomRight, bottomLeft));
     }
 
     private void FinishLevel() {
@@ -256,14 +240,6 @@ public class GameController : MonoBehaviour
         Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         position.z = 0;
         return position;
-    }
-
-    private GameObject SpawnBorder(Vector2 startPos, Vector2 endPos) {
-        GameObject border = Instantiate(resourcesController.borderPrefab, Vector2.zero, Quaternion.identity);
-        border.GetComponent<LineRenderer>().SetPosition(0, startPos);
-        border.GetComponent<LineRenderer>().SetPosition(1, endPos);
-        border.GetComponent<LineRenderer>().material = resourcesController.borderMaterial;
-        return border;
     }
 
     private GameObject SpawnTempEdge(Vector2 position) {
