@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    private float defaultBorderMargin = 10;
+    private float defaultBorderMargin = 7;
 
     public ResourcesController resourcesController;
 
