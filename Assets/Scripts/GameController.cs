@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-    public static int CURRENT_LEVEL = -1;
+    public static int CURRENT_LEVEL = 0;
     private static float MAX_VERTEX_PROXIMITY = 1.0f;
 
     public ResourcesController resourcesController;
@@ -24,15 +24,12 @@ public class GameController : MonoBehaviour
 
     private bool multiTouchInPreviousFrame = false;
 
-    void Start() {
-        if (CURRENT_LEVEL != -1) {
-            PrepareNewLevel();
-        }
+    void Awake() {
+        PrepareNewLevel();
     }
 
-    void Update()
-    {
-        if (currentLevel != null && currentLevel.GetGraph().AllVerticesHappy()) {
+    void Update() {
+        if (currentLevel.GetGraph().AllVerticesHappy()) {
             if (AnyInput() && !levelFinished) {
                 FinishLevel();
             }
@@ -56,7 +53,7 @@ public class GameController : MonoBehaviour
             } else if (Input.touchCount > 1) {
                 multiTouchInPreviousFrame = true;
                 Camera.main.transform.position -= getMiddleDeltaPosition(Input.GetTouch(0), Input.GetTouch(1));
-            } else { // 0 touches
+            } else {
                 multiTouchInPreviousFrame = false;
             }
         } else {
