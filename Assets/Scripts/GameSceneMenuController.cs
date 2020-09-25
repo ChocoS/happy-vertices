@@ -9,4 +9,8 @@ public class GameSceneMenuController : MonoBehaviour
     public void LoadMenu() {
         levelLoader.LoadMenu();
     }
+
+    public void ReloadLevel() {
+        levelLoader.LoadLevel(GameController.CURRENT_LEVEL);
+    }
 }
