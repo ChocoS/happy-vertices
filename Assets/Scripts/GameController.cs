@@ -174,6 +174,7 @@ public class GameController : MonoBehaviour
         UpdateAllVerticesGameObjects();
         currentLevelMoveCounter = 0;
         gameInfoPanelController.setNumberOfMoves(0);
+        gameInfoPanelController.setBestNumberOfMoves(PlayerContextManager.GetCurrentContext().GetBestNumberOfMovesForLevel(CURRENT_LEVEL));
         levelFinished = false;
     }
 

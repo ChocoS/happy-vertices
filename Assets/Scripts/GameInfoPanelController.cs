@@ -5,9 +5,14 @@ using TMPro;
 
 public class GameInfoPanelController : MonoBehaviour
 {
-    private static string NUMBER_OF_MOVES_PREFIX = "MOVES: ";
+    public GameObject bestNumberOfMoves;
+    public GameObject currentNumberOfMoves;
 
     public void setNumberOfMoves(int numberOfMoves) {
-        gameObject.GetComponentInChildren<TextMeshProUGUI>().text = NUMBER_OF_MOVES_PREFIX + numberOfMoves;
+        currentNumberOfMoves.GetComponent<TextMeshProUGUI>().text = "MOVES: " + numberOfMoves;
+    }
+
+    public void setBestNumberOfMoves(int numberOfMoves) {
+        bestNumberOfMoves.GetComponent<TextMeshProUGUI>().text = numberOfMoves == -1 ? "BEST: -" : "BEST: " + numberOfMoves;
     }
 }
