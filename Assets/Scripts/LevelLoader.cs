@@ -9,7 +9,7 @@ public class LevelLoader : MonoBehaviour
 
     public void LoadLevel(int level) {
         if (level > LevelManager.levelTemplates.Count - 1) {
-            LoadMenu();
+            LoadCredits();
         } else {
             StartCoroutine(LoadLevelCoroutine(level));
         }
@@ -17,6 +17,10 @@ public class LevelLoader : MonoBehaviour
 
     public void LoadMenu() {
         StartCoroutine(LoadMenuCoroutine());
+    }
+
+    public void LoadCredits() {
+        StartCoroutine(LoadCreditsCoroutine());
     }
 
     IEnumerator LoadLevelCoroutine(int level) {
@@ -30,5 +34,11 @@ public class LevelLoader : MonoBehaviour
         animator.SetTrigger("Start");
         yield return new WaitForSeconds(1);
         SceneManager.LoadScene("MenuScene");
+    }
+
+    IEnumerator LoadCreditsCoroutine() {
+        animator.SetTrigger("Start");
+        yield return new WaitForSeconds(1);
+        SceneManager.LoadScene("CreditsScene");
     }
 }
